@@ -1,5 +1,6 @@
 package com.todo.service;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import javax.ejb.AsyncResult;
@@ -36,7 +37,10 @@ public class TodoService {
 
 
 	public TodoList find(Long id) {
-		return entityManager.find(TodoList.class, id);
+		TodoList todoList = entityManager.find(TodoList.class, id);
+		List<String> tags = todoList.getTags();
+		System.out.println("Tags : " + tags);
+		return todoList;
 	}
 
 }
