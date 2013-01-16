@@ -1,5 +1,8 @@
 package com.todo.service;
 
+import java.util.concurrent.Future;
+
+import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,7 +23,7 @@ public class TodoService {
 	
 
 	@Asynchronous
-	public TodoList createAsync(TodoList todoList){
+	public Future<TodoList> createAsync(TodoList todoList){
 		try {
 			System.out.println("Sleeping for 15 seconds");
 			Thread.sleep(15000);
@@ -28,7 +31,7 @@ public class TodoService {
 			// ignore it
 		}
 		entityManager.persist(todoList);
-		return todoList;
+		return new AsyncResult<TodoList>(todoList);
 	}
 
 
