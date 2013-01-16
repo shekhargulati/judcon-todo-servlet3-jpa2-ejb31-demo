@@ -1,8 +1,5 @@
 package com.todo.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -11,9 +8,6 @@ import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import com.todo.domain.TodoList;
 
@@ -46,20 +40,6 @@ public class TodoService {
 		return todoList;
 	}
 
-	public List<TodoList> findByTag(String... tags){
-		List<String> list = new ArrayList<String>();
-		for (String tag : tags) {
-			list.add(tag);
-		}
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-	    CriteriaQuery<TodoList> query = builder.createQuery(TodoList.class);
-	    Root<TodoList> todoList = query.from(TodoList.class);
-	    query.select(todoList).where(
-	            todoList.get("tags").in(list));
-	    return entityManager.createQuery(query).getResultList();
-	}
-	
 	private void initTags(TodoList todoList) {
 		List<String> tags = todoList.getTags();
 		System.out.println("Tags : " + tags);

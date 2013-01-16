@@ -2,7 +2,6 @@ package com.todo.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -32,21 +31,13 @@ public class TodoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String todoListId = request.getParameter("id");
-		String tagsParam = request.getParameter("tags");
 		System.out.println("TodoList Id : " + todoListId);
-		System.out.println("tags : " + tagsParam);
 		
 		if (todoListId != null) {
 			TodoList todoList = todoService.find(Long.valueOf(todoListId));
 			response.getWriter().println(todoList.toString());
 			return;
-		} else if (tagsParam != null) {
-			String[] tags = tagsParam.split(",");
-			List<TodoList> todoLists = todoService.findByTag(tags);
-			response.getWriter().println(todoLists.toString());
-			return;
-		}
-		
+		} 
 		response.getWriter().println("Please specify either id or tags");
 
 	}
