@@ -41,11 +41,10 @@ public class TodoService {
 
 	public TodoList find(Long id) {
 		TodoList todoList = entityManager.find(TodoList.class, id);
-		List<String> tags = todoList.getTags();
-		System.out.println("Tags : " + tags);
+		initTags(todoList);
 		return todoList;
 	}
-	
+
 	public List<TodoList> findByTag(String... tags){
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<TodoList> criteria = criteriaBuilder.createQuery(TodoList.class);
@@ -54,7 +53,15 @@ public class TodoService {
 		expressionTags.in(Arrays.asList(tags));
 		criteria.select(root);
 		List<TodoList> todoLists = entityManager.createQuery(criteria).getResultList();
+		for (TodoList todoList : todoLists) {
+			initTags(todoList);
+		}
 		return todoLists;
+	}
+	
+	private void initTags(TodoList todoList) {
+		List<String> tags = todoList.getTags();
+		System.out.println("Tags : " + tags);
 	}
 
 }
