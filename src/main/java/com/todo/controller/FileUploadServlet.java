@@ -16,7 +16,7 @@ import javax.servlet.http.Part;
  * Servlet implementation class FileUploadServlet
  */
 @WebServlet("/upload")
-@MultipartConfig(location = "/var/lib/openshift/65504c2d1c394a1f871e5084fa023d95/app-root/data")
+@MultipartConfig(location = "/var/lib/openshift/a755c1fa34384673bc1ddde77d233f64/app-root/data")
 public class FileUploadServlet extends HttpServlet {
 
 	public static final String NAME = "helo";

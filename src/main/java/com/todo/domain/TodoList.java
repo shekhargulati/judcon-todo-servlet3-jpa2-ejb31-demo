@@ -27,7 +27,7 @@ public class TodoList {
 	private String name;
 
 	private Date createdOn = new Date();
-
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@OrderColumn
 	@JoinColumn(name = "todolist_id")

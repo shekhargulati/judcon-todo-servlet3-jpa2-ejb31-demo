@@ -2,6 +2,7 @@ package com.todo.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -21,29 +22,49 @@ import com.todo.service.TodoService;
 public class TodoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
 	@EJB
 	private TodoService todoService;
-	
-	
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		String todoListId = request.getParameter("id");
-		TodoList todoList = todoService.find(Long.valueOf(todoListId));
-		response.getWriter().println(todoList.toString());
+		String tagsParam = request.getParameter("tags");
+		System.out.println("TodoList Id : " + todoListId);
+		System.out.println("tags : " + tagsParam);
+		
+		if (todoListId != null) {
+			TodoList todoList = todoService.find(Long.valueOf(todoListId));
+			response.getWriter().println(todoList.toString());
+			return;
+		} else if (tagsParam != null) {
+			String[] tags = tagsParam.split(",");
+			List<TodoList> todoLists = todoService.findByTag(tags);
+			response.getWriter().println(todoLists.toString());
+			return;
+		}
+		
+		response.getWriter().println("Please specify either id or tags");
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		TodoList todoList = new TodoList("JUDCon India TodoList", Arrays.asList(new Todo("Give session 1"), new Todo("Give session 2")), Arrays.asList("cloud","judcon"));
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		TodoList todoList = new TodoList("JUDCon India TodoList",
+				Arrays.asList(new Todo("Give session 1"), new Todo(
+						"Give session 2")), Arrays.asList("cloud", "judcon"));
 		TodoList createdTodolisList = todoService.create(todoList);
-		
-		response.getWriter().println("Created TodoList with Id : "+createdTodolisList.getId());
-		
+
+		response.getWriter().println(
+				"Created TodoList with Id : " + createdTodolisList.getId());
+
 	}
 
 }
