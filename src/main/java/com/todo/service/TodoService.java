@@ -2,6 +2,7 @@ package com.todo.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -47,7 +48,9 @@ public class TodoService {
 
 	public List<TodoList> findByTag(String... tags){
 		List<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList(tags));
+		for (String tag : tags) {
+			list.add(tag);
+		}
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
 	    CriteriaQuery<TodoList> query = builder.createQuery(TodoList.class);
