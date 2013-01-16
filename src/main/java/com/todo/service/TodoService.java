@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
 import com.todo.domain.TodoList;
@@ -46,16 +45,13 @@ public class TodoService {
 	}
 
 	public List<TodoList> findByTag(String... tags){
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<TodoList> criteria = criteriaBuilder.createQuery(TodoList.class);
-		Root<TodoList> root = criteria.from(TodoList.class);
-		final Expression<List<String>>  expressionTags = root.get("tags");
-		criteria.select(root).where(expressionTags.in(Arrays.asList(tags)));
-		List<TodoList> todoLists = entityManager.createQuery(criteria).getResultList();
-		for (TodoList todoList : todoLists) {
-			initTags(todoList);
-		}
-		return todoLists;
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+	    CriteriaQuery<TodoList> query = builder.createQuery(TodoList.class);
+	    Root<TodoList> todoList = query.from(TodoList.class);
+	    query.select(todoList).where(
+	            todoList.get("tags").in(Arrays.asList(tags)));
+	    return entityManager.createQuery(query).getResultList();
 	}
 	
 	private void initTags(TodoList todoList) {
