@@ -50,8 +50,7 @@ public class TodoService {
 		CriteriaQuery<TodoList> criteria = criteriaBuilder.createQuery(TodoList.class);
 		Root<TodoList> root = criteria.from(TodoList.class);
 		final Expression<List<String>>  expressionTags = root.get("tags");
-		expressionTags.in(Arrays.asList(tags));
-		criteria.select(root);
+		criteria.select(root).where(expressionTags.in(Arrays.asList(tags)));
 		List<TodoList> todoLists = entityManager.createQuery(criteria).getResultList();
 		for (TodoList todoList : todoLists) {
 			initTags(todoList);
